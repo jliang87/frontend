@@ -17,9 +17,7 @@ const DashboardLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
   flex: '1 1 auto',
   overflow: 'hidden',
   paddingTop: '64px',
-  [theme.breakpoints.up('lg')]: {
-    paddingLeft: '280px'
-  }
+  paddingLeft: '280px'
 }));
 
 const DashboardLayoutContainer = experimentalStyled('div')({
@@ -42,10 +40,7 @@ const DashboardLayout = () => {
   return (
     <DashboardLayoutRoot>
       <DashboardNavbar onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)} />
-      <DashboardSidebar
-        onMobileClose={() => setIsSidebarMobileOpen(false)}
-        openMobile={isSidebarMobileOpen}
-      />
+      <DashboardSidebar/>
       <DashboardLayoutWrapper>
         <DashboardLayoutContainer>
           <DashboardLayoutContent>

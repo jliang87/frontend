@@ -165,10 +165,10 @@ let board = {
   ]
 };
 
-mock
-  .onGet('/api/kanban/board')
-  .reply(200, { board });
-
+// mock
+//   .onGet('/api/kanban/board')
+//   .reply(200, { board });
+//
 mock
   .onPost('/api/kanban/columns/new')
   .reply((request) => {

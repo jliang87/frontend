@@ -30,24 +30,14 @@ const DashboardNavbar = (props) => {
   return (
     <DashboardNavbarRoot {...other}>
       <Toolbar sx={{ minHeight: 64 }}>
-        <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onSidebarMobileOpen}
-          >
-            <MenuIcon fontSize="small" />
-          </IconButton>
-        </Hidden>
-        <Hidden lgDown>
-          <RouterLink to="/">
-            <Logo
-              sx={{
-                height: 40,
-                width: 40
-              }}
-            />
-          </RouterLink>
-        </Hidden>
+        <RouterLink to="/">
+          <Logo
+            sx={{
+              height: 40,
+              width: 40
+            }}
+          />
+        </RouterLink>
         <Box
           sx={{
             flexGrow: 1,

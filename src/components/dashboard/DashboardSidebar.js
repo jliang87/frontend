@@ -202,24 +202,6 @@ const DashboardSidebar = (props) => {
       }}
     >
       <Scrollbar options={{ suppressScrollX: true }}>
-        <Hidden lgUp>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              p: 2
-            }}
-          >
-            <RouterLink to="/">
-              <Logo
-                sx={{
-                  height: 40,
-                  width: 40
-                }}
-              />
-            </RouterLink>
-          </Box>
-        </Hidden>
         <Box sx={{ p: 2 }}>
           <Box
             sx={{
@@ -311,23 +293,6 @@ const DashboardSidebar = (props) => {
 
   return (
     <>
-      <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          onClose={onMobileClose}
-          open={openMobile}
-          PaperProps={{
-            sx: {
-              backgroundColor: 'background.paper',
-              width: 280
-            }
-          }}
-          variant="temporary"
-        >
-          {content}
-        </Drawer>
-      </Hidden>
-      <Hidden lgDown>
         <Drawer
           anchor="left"
           open
@@ -343,7 +308,6 @@ const DashboardSidebar = (props) => {
         >
           {content}
         </Drawer>
-      </Hidden>
     </>
   );
 };
