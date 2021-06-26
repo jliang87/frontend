@@ -2,7 +2,7 @@ import axios from 'axios';
 import AxiosMockAdapter from 'axios-mock-adapter';
 
 const axiosConfig = {
-  baseURL: 'http://localhost:3100/api/v1',
+  baseURL: 'http://localhost:3100/api/',
   timeout: 30000
 };
 

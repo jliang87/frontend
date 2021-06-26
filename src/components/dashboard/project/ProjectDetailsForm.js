@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import MobileDatePicker from '@material-ui/lab/MobileDatePicker';
+import {DatePicker} from "@material-ui/lab";
 import {
   Box,
   Button,
-  Card,
+  Paper,
   Chip,
   FormHelperText,
   IconButton,
@@ -14,37 +14,43 @@ import {
   Typography
 } from '@material-ui/core';
 import PlusIcon from '../../../icons/Plus';
+import { updateProjectDetails } from '../../../slices/project'
+import { useDispatch, useSelector } from '../../../store';
 
 const ProjectDetailsForm = (props) => {
   const { onBack, onNext, ...other } = props;
   const [tag, setTag] = useState('');
+  const dispatch = useDispatch();
+  const { name, tags, startDate, endDate } = useSelector((state) => state.project);
 
   return (
     <Formik
       initialValues={{
-        projectName: '',
-        tags: ['Full-Time'],
-        startDate: new Date(),
-        endDate: new Date(),
-        submit: null
+        projectName: name,
+        tags: tags,
+        startDate: startDate,
+        endDate: endDate,
       }}
       validationSchema={Yup
         .object()
         .shape({
           projectName: Yup
             .string()
-            .min(3, 'Must be at least 3 characters')
             .max(255)
             .required('Required'),
           tags: Yup.array(),
           startDate: Yup.date(),
           endDate: Yup.date()
         })}
-      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+      onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          // Call API to store step data in server session
-          // It is important to have it on server to be able to reuse it if user
-          // decides to continue later.
+          dispatch(updateProjectDetails(
+                values.projectName,
+                values.tags,
+                values.startDate,
+                values.endDate
+              ));
+
           setStatus({ success: true });
           setSubmitting(false);
 
@@ -65,37 +71,34 @@ const ProjectDetailsForm = (props) => {
         handleChange,
         handleSubmit,
         isSubmitting,
+        submitCount,
         setFieldValue,
         setFieldTouched,
         touched,
         values
       }) => (
         <form
+          autoComplete="off"
           onSubmit={handleSubmit}
           {...other}
         >
-          <Card sx={{ p: 3 }}>
+          <Paper elevation={0} sx={{ p: 3 }}>
             <Typography
               color="textPrimary"
               variant="h6"
             >
               Project details
             </Typography>
-            <Typography
-              color="textSecondary"
-              variant="body1"
-            >
-              Proin tincidunt lacus sed ante efficitur efficitur.
-              Quisque aliquam fringilla velit sit amet euismod.
-            </Typography>
             <Box sx={{ mt: 2 }}>
               <TextField
-                error={Boolean(touched.projectName && errors.projectName)}
+                error={Boolean(submitCount > 0 && errors.projectName)}
                 fullWidth
-                helperText={touched.projectName && errors.projectName}
                 label="Project Name"
                 name="projectName"
                 onBlur={handleBlur}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={handleChange}
                 value={values.projectName}
                 variant="outlined"
@@ -111,6 +114,9 @@ const ProjectDetailsForm = (props) => {
                   fullWidth
                   label="Tags"
                   name="tags"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   onChange={(event) => setTag(event.target.value)}
                   value={tag}
                   variant="outlined"
@@ -166,48 +172,42 @@ const ProjectDetailsForm = (props) => {
                 }}
               >
                 <Box sx={{ mr: 2 }}>
-                  <MobileDatePicker
+                  <DatePicker
                     label="Start Date"
                     onAccept={() => setFieldTouched('startDate')}
                     onChange={(date) => setFieldValue('startDate', date)}
                     onClose={() => setFieldTouched('startDate')}
                     renderInput={(inputProps) => (
                       <TextField
-                        variant="outlined"
                         {...inputProps}
+                        helperText={null}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        error={Boolean(submitCount > 0 && errors.startDate)}
                       />
-                    )}
+                      )}
                     value={values.startDate}
                   />
                 </Box>
-                <MobileDatePicker
+                <DatePicker
                   label="End Date"
                   onAccept={() => setFieldTouched('endDate')}
                   onChange={(date) => setFieldValue('endDate', date)}
                   onClose={() => setFieldTouched('endDate')}
                   renderInput={(inputProps) => (
                     <TextField
-                      variant="outlined"
                       {...inputProps}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      helperText={null}
+                      error={Boolean(submitCount > 0 && errors.endDate)}
                     />
                   )}
                   value={values.endDate}
                 />
               </Box>
-              {Boolean(touched.startDate && errors.startDate) && (
-                <Box sx={{ mt: 2 }}>
-                  <FormHelperText error>
-                    {errors.startDate}
-                  </FormHelperText>
-                </Box>
-              )}
-              {Boolean(touched.endDate && errors.endDate) && (
-                <Box sx={{ mt: 2 }}>
-                  <FormHelperText error>
-                    {errors.endDate}
-                  </FormHelperText>
-                </Box>
-              )}
             </Box>
             <Box
               sx={{
@@ -231,11 +231,12 @@ const ProjectDetailsForm = (props) => {
                 disabled={isSubmitting}
                 type="submit"
                 variant="contained"
+                size="large"
               >
                 Next
               </Button>
             </Box>
-          </Card>
+          </Paper>
         </form>
       )}
     </Formik>

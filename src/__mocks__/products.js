@@ -70,6 +70,6 @@ const products = [
   }
 ];
 
-mock
-  .onGet('/api/products')
-  .reply(200, { products });
+// mock
+//   .onGet('/api/products')
+//   .reply(200, { products });

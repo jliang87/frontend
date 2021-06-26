@@ -7,7 +7,7 @@ import ProjectDetailsForm from './ProjectDetailsForm';
 import ProjectOwnerForm from './ProjectOwnerForm';
 
 const ProjectCreateWizard = (props) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [completed, setCompleted] = useState(false);
 
   const handleNext = () => {
@@ -32,7 +32,6 @@ const ProjectCreateWizard = (props) => {
             )}
             {activeStep === 1 && (
               <ProjectDetailsForm
-                onBack={handleBack}
                 onNext={handleNext}
               />
             )}

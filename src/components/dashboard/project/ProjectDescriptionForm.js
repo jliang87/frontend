@@ -9,7 +9,7 @@ const ProjectDescriptionForm = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleChange = (value) => {
+  const handleQuillEditorChange = (value) => {
     setContent(value);
   };
 
@@ -18,6 +18,8 @@ const ProjectDescriptionForm = (props) => {
 
     try {
       setIsSubmitting(true);
+
+      console.log("as" + content);
 
       // NOTE: Make API request
 
@@ -56,7 +58,7 @@ const ProjectDescriptionForm = (props) => {
           variant="outlined"
         >
           <QuillEditor
-            handleChange={handleChange}
+            onChange={handleQuillEditorChange}
             placeholder="Write something"
             sx={{ height: 400 }}
             value={content}

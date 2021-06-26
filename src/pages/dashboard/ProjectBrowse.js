@@ -1,23 +1,37 @@
-import { useCallback, useState, useEffect } from 'react';
+import {useCallback, useState, useEffect, useRef} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Box, Breadcrumbs, Button, Container, Grid, Link, Typography } from '@material-ui/core';
-import { ProjectBrowseFilter, ProjectBrowseResults } from '../../components/dashboard/project';
+import { Box, Breadcrumbs, Button, Container, Grid, Link, Typography, Drawer } from '@material-ui/core';
+import {ProjectBrowseFilter, ProjectBrowseResults, ProjectCreateWizard} from '../../components/dashboard/project';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 import useSettings from '../../hooks/useSettings';
 import ChevronRightIcon from '../../icons/ChevronRight';
 import PlusIcon from '../../icons/Plus';
 import gtm from '../../lib/gtm';
 import axios from '../../lib/axios';
+import {updateProjectDetails} from "../../slices/project";
+import { useDispatch, useSelector } from '../../store';
 
 const ProjectBrowse = () => {
   const isMountedRef = useIsMountedRef();
   const { settings } = useSettings();
   const [projects, setProjects] = useState([]);
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     gtm.push({ event: 'page_view' });
   }, []);
+
+  const onClose = function () {
+    dispatch(updateProjectDetails(
+        null,
+        [],
+        null,
+        null
+    ));
+    setIsCreateDrawerOpen(false);
+  };
 
   const getProjects = useCallback(async () => {
     try {
@@ -94,11 +108,12 @@ const ProjectBrowse = () => {
               <Box sx={{ m: -1 }}>
                 <Button
                   color="primary"
-                  component={RouterLink}
+                  // component={RouterLink}
                   startIcon={<PlusIcon fontSize="small" />}
                   sx={{ m: 1 }}
-                  to="/dashboard/projects/new"
+                  // to="/dashboard/projects/new"
                   variant="contained"
+                  onClick={() => setIsCreateDrawerOpen(true)}
                 >
                   New Project
                 </Button>
@@ -113,6 +128,20 @@ const ProjectBrowse = () => {
           </Box>
         </Container>
       </Box>
+      <Drawer
+          anchor="right"
+          open={isCreateDrawerOpen}
+          onClose={onClose}
+          PaperProps={{
+            sx: {
+              backgroundColor: 'background.paper',
+              width: '700px'
+            }
+          }}
+          variant="temporary"
+      >
+        <ProjectCreateWizard />
+      </Drawer>
     </>
   );
 };
