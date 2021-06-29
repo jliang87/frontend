@@ -25,7 +25,7 @@ const ProjectCreateWizard = (props) => {
 
   const handleComplete = () => {
     dispatch(updateProjectDetails(
-      "",production.rb
+      "",
       [],
       null,
       null
