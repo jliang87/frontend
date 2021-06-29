@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -187,7 +187,7 @@ const ProjectDetailsForm = (props) => {
                         error={Boolean(submitCount > 0 && errors.startDate)}
                       />
                       )}
-                    value={values.startDate}
+                    value={values.startDate || ""}
                   />
                 </Box>
                 <DatePicker
@@ -205,7 +205,7 @@ const ProjectDetailsForm = (props) => {
                       error={Boolean(submitCount > 0 && errors.endDate)}
                     />
                   )}
-                  value={values.endDate}
+                  value={values.endDate || ""}
                 />
               </Box>
             </Box>

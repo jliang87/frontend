@@ -5,10 +5,15 @@ import StarIcon from '@material-ui/icons/Star';
 import ProjectDescriptionForm from './ProjectDescriptionForm';
 import ProjectDetailsForm from './ProjectDetailsForm';
 import ProjectOwnerForm from './ProjectOwnerForm';
+import {updateOpenCreateProjectDrawer, updateProjectDescription, updateProjectDetails} from "../../../slices/project";
+import { useDispatch } from '../../../store';
+import { useSnackbar } from 'notistack';
 
 const ProjectCreateWizard = (props) => {
   const [activeStep, setActiveStep] = useState(1);
   const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -19,7 +24,21 @@ const ProjectCreateWizard = (props) => {
   };
 
   const handleComplete = () => {
-    setCompleted(true);
+    dispatch(updateProjectDetails(
+      "",production.rb
+      [],
+      null,
+      null
+    ));
+    dispatch(updateProjectDescription(""));
+    dispatch(updateOpenCreateProjectDrawer(false));
+    enqueueSnackbar('Project created!', {
+      anchorOrigin: {
+        horizontal: 'right',
+        vertical: 'top'
+      },
+      variant: 'success'
+    });
   };
 
   return (

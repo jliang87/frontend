@@ -9,14 +9,14 @@ import ChevronRightIcon from '../../icons/ChevronRight';
 import PlusIcon from '../../icons/Plus';
 import gtm from '../../lib/gtm';
 import axios from '../../lib/axios';
-import {updateProjectDetails} from "../../slices/project";
+import {updateOpenCreateProjectDrawer, updateProjectDescription, updateProjectDetails} from "../../slices/project";
 import { useDispatch, useSelector } from '../../store';
 
 const ProjectBrowse = () => {
   const isMountedRef = useIsMountedRef();
   const { settings } = useSettings();
   const [projects, setProjects] = useState([]);
-  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
+  const { openCreateProjectDrawer } = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,12 +25,13 @@ const ProjectBrowse = () => {
 
   const onClose = function () {
     dispatch(updateProjectDetails(
-        null,
+        "",
         [],
         null,
         null
     ));
-    setIsCreateDrawerOpen(false);
+    dispatch(updateProjectDescription(""));
+    dispatch(updateOpenCreateProjectDrawer(false));
   };
 
   const getProjects = useCallback(async () => {
@@ -113,7 +114,7 @@ const ProjectBrowse = () => {
                   sx={{ m: 1 }}
                   // to="/dashboard/projects/new"
                   variant="contained"
-                  onClick={() => setIsCreateDrawerOpen(true)}
+                  onClick={() => dispatch(updateOpenCreateProjectDrawer(true))}
                 >
                   New Project
                 </Button>
@@ -130,12 +131,12 @@ const ProjectBrowse = () => {
       </Box>
       <Drawer
           anchor="right"
-          open={isCreateDrawerOpen}
+          open={openCreateProjectDrawer}
           onClose={onClose}
           PaperProps={{
             sx: {
               backgroundColor: 'background.paper',
-              width: '700px'
+              width: '602px'
             }
           }}
           variant="temporary"

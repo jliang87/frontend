@@ -9,7 +9,7 @@ const axiosConfig = {
 const axiosInstance = axios.create(axiosConfig);
 
 axiosInstance.interceptors.response.use((response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong'));
+  (error) => Promise.reject((error.response && error.response.data) || error.response));
 
 export const mock = new AxiosMockAdapter(axiosInstance, { delayResponse: 0 });
 

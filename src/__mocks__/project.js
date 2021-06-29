@@ -322,3 +322,7 @@ The project has been created in Sketch so let me know if there are any problems 
 
     return [200, { project }];
   });
+
+mock
+  .onAny()
+  .passThrough();

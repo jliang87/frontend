@@ -7,7 +7,8 @@ const initialState = {
   tags: [],
   startDate: null,
   endDate: null,
-  description: ""
+  description: "",
+  openCreateProjectDrawer: false
 };
 
 const slice = createSlice({
@@ -25,6 +26,11 @@ const slice = createSlice({
     updateProjectDescription(state, action) {
       const { description } = action.payload;
       state.description = description;
+    },
+
+    updateOpenCreateProjectDrawer(state, action) {
+      const { openCreateProjectDrawer } = action.payload;
+      state.openCreateProjectDrawer = openCreateProjectDrawer;
     }
   }
 });
@@ -39,12 +45,8 @@ export const updateProjectDescription = (description) => (dispatch) => {
   dispatch(slice.actions.updateProjectDescription({description}));
 };
 
-export const getProjectDetails = (name, tags, startDate, endDate) => (dispatch) => {
-  dispatch(slice.actions.updateProjectDetails({name, tags, startDate, endDate}));
-};
-
-export const getProjectDescription = (description) => (dispatch) => {
-  dispatch(slice.actions.updateProjectDescription({description}));
+export const updateOpenCreateProjectDrawer = (openCreateProjectDrawer) => (dispatch) => {
+  dispatch(slice.actions.updateOpenCreateProjectDrawer({openCreateProjectDrawer}));
 };
 
 export default slice;
